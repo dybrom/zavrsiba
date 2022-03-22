@@ -12,6 +12,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM users u where u.email =?1")
     User findByEmail(String email);
-    List<User> findAllByRoles(List<Role> roles);
+
+    List<User> findAllByRolesIn(List<Role> roles);
 
 }
