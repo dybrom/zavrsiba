@@ -29,7 +29,13 @@ public class AuthController {
 
     @PostMapping("/login")
     ResponseEntity<Boolean> login(@Valid @RequestBody UserLoginDTO user) {
-        return ResponseEntity.ok(authService.login(user));
+        try {
+            return ResponseEntity.ok(authService.login(user));
+        }
+        catch(Error e) {
+            return ResponseEntity.status(500).body(false);
+        }
+
     }
 
 }

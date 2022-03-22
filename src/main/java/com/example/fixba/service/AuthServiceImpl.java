@@ -42,7 +42,11 @@ public class AuthServiceImpl  implements  AuthService {
 
     public Boolean login(UserLoginDTO userData) {
         User user = userRepository.findByEmail(userData.getEmail());
-        System.out.println("user: " + user.getPassword());
+//        System.out.println("user: " + user.getPassword());
+//        return true;
+        if(user == null) {
+            return false;
+        }
         return passwordEncoder.matches(userData.getPassword(), user.getPassword());
     }
 }

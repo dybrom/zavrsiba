@@ -2,6 +2,10 @@ package com.example.fixba.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.example.fixba.model.EmailPassword;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micrometer.core.instrument.util.IOUtils;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,13 +32,14 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         this.authenticationManager = authenticationManager;
     }
 
+    @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        log.info("Email is {}", email);
-        log.info("Password is {}", password);
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
+        EmailPassword authRequest = new ObjectMapper()
+                .readValue(request.getInputStream(), EmailPassword.class);
+        log.info(authRequest.getEmail());
+        log.info(authRequest.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword());
         return authenticationManager.authenticate(authenticationToken);
 //        return super.attemptAuthentication(request, response);
     }
