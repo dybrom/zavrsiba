@@ -1,0 +1,77 @@
+openapi: "3.0.0"
+info:
+  description: "Users"
+  version: "0.0.1"
+  title: "Users"
+tags:
+  - name: "Users"
+    description: "Users service"
+servers:
+  - url: http://localhost:8080/
+    description: "local host"
+
+paths:
+  /api/v1/roles:
+    get:
+      tags:
+        - "Roles"
+      summary: "Get roles"
+      operationId: "getRoles"
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/sizeParam'
+        - name: "order"
+          in: "query"
+          description: "order columns comma separated list"
+          required: false
+          schema:
+            type: "string"
+            pattern: "^(((dueDate|title|createdAt){1}:)((asc|desc){1}))(,{1}(((dueDate|title|createdAt)+:)((asc|desc){1})))*$"
+            default: "createdAt:desc"
+            example: "title:asc,dueDate:desc"
+      responses:
+        200:
+          description: "List of roles"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "./user-api.yaml#/schemas/UserContract"
+components:
+  parameters:
+    pageParam:
+      name: "page"
+      in: "query"
+      description: "pagination page"
+      required: false
+      schema:
+        type: "integer"
+        default: 0
+    sizeParam:
+      name: "size"
+      in: "query"
+      description: "pagination size"
+      required: false
+      schema:
+        type: "integer"
+  schemas:
+    TestContractInFile:
+      type: "object"
+      properties:
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+        updatedBy:
+          type: "string"
+        createdBy:
+          type: "string"
+        id:
+          type: "integer"
+        email:
+          type: "string"
+        name:
+          type: "string"
