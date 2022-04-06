@@ -1,6 +1,5 @@
 package com.example.fixba.service;
 
-import com.example.fixba.dto.UserDTO;
 import com.example.fixba.dto.UserLoginDTO;
 import com.example.fixba.model.Role;
 import com.example.fixba.model.User;
@@ -29,21 +28,19 @@ public class AuthServiceImpl  implements  AuthService {
         this.roleService = roleService;
     }
 
-    public UserDTO register(UserLoginDTO userData) {
-        List<Role> roles = new ArrayList<>();
-        for(Long id:userData.getRoles()) {
-            Role role = roleService.getRole(id);
-            roles.add(role);
-        }
-        User user = new User(userData.getEmail(), passwordEncoder.encode(userData.getPassword()), roles);
-        userRepository.save(user);
-        return DTOUtility.getUserDTOFromUser(user);
-    }
+//    public UserDTO register(UserLoginDTO userData) {
+//        List<Role> roles = new ArrayList<>();
+//        for(Long id:userData.getRoles()) {
+//            Role role = roleService.getRole(id);
+//            roles.add(role);
+//        }
+//        User user = new User(userData.getEmail(), passwordEncoder.encode(userData.getPassword()), roles);
+//        return DTOUtility.getUserDTOFromUser(userRepository.save(user));
+////        return DTOUtility.getUserDTOFromUser(user);
+//    }
 
     public Boolean login(UserLoginDTO userData) {
         User user = userRepository.findByEmail(userData.getEmail());
-//        System.out.println("user: " + user.getPassword());
-//        return true;
         if(user == null) {
             return false;
         }

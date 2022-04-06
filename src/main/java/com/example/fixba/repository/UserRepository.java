@@ -15,4 +15,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     List<User> findAllByRolesIn(List<Role> roles);
 
+    @Query("SELECT u FROM users u WHERE u.name LIKE %?1%"
+            + " OR u.email LIKE %?1%")
+    List<User> searchUserByEmailOrName(String searchTerm);
+
+    @Query(value = "SELECT u.* FROM users u " +
+            "JOIN users_roles ur " + "ON u.id = ur.users_id " +
+            "JOIN role r ON ur.roles_id = r.id WHERE r.name  LIKE :searchTerm OR u.name LIKE :search OR u.email LIKE :searchTerm", nativeQuery = true)
+    List<User> findUsersByRoleOrName(String searchTerm);
 }

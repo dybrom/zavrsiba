@@ -1,0 +1,223 @@
+openapi: "3.0.0"
+info:
+  description: "Users"
+  version: "0.0.1"
+  title: "Users"
+tags:
+  - name: "Users"
+    description: "Users service"
+servers:
+  - url: http://localhost:8080/
+    description: "local host"
+
+paths:
+  /api/v1/auth/register:
+      post:
+            tags:
+              - "Auth"
+            summary: "Add new user"
+            operationId: "userRegister"
+            requestBody:
+              required: true
+              content:
+                application/json:
+                  schema:
+                    $ref: "./roles-schemas.yaml#/schemas/RoleAddContract"
+            responses:
+              200:
+                description: "Add new role"
+                content:
+                  application/json:
+                    schema:
+                      $ref: "./roles-schemas.yaml#/schemas/UserRoleContract"
+  /api/v1/roles:
+    post:
+          tags:
+            - "Roles"
+          summary: "Add new role"
+          operationId: "addRole"
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: "./roles-schemas.yaml#/schemas/RoleAddContract"
+          responses:
+            200:
+              description: "Add new role"
+              content:
+                application/json:
+                  schema:
+                    $ref: "./roles-schemas.yaml#/schemas/UserRoleContract"
+
+    get:
+      tags:
+        - "Roles"
+      summary: "Get all roles"
+      operationId: "getRoles"
+      responses:
+        200:
+          description: "List of roles"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "./roles-schemas.yaml#/schemas/UserRoleContract"
+  /api/v1/users:
+    get:
+      tags:
+        - "Users"
+      summary: "Get all users"
+      operationId: "getUsers"
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/sizeParam'
+        - $ref: '#/components/parameters/searchTerm'
+        - name: "order"
+          in: "query"
+          description: "order columns comma separated list"
+          required: false
+          schema:
+            type: "string"
+            pattern: "^(((dueDate|title|createdAt){1}:)((asc|desc){1}))(,{1}(((dueDate|title|createdAt)+:)((asc|desc){1})))*$"
+            default: "createdAt:desc"
+            example: "title:asc,dueDate:desc"
+      responses:
+        200:
+          description: "List of users"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "./user-api.yaml#/schemas/UserContract"
+    post:
+      tags:
+        - "Users"
+      summary: "Add new users"
+      operationId: "addUser"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "./user-api.yaml#/schemas/UserRegisterContract"
+      responses:
+        200:
+          description: "Add new user"
+          content:
+            application/json:
+              schema:
+                $ref: "./user-api.yaml#/schemas/UserContract"
+
+  /api/v1/users/{id}:
+    get:
+      tags:
+        - "Users"
+      summary: Get User
+      description: Get user by id.
+      operationId: getUser
+      parameters:
+        - $ref: "./user-api.yaml#/schemas/UserId"
+      responses:
+        200:
+          description: "Get user"
+          content:
+            application/json:
+              schema:
+                $ref: "./user-api.yaml#/schemas/UserContract"
+        '401':
+          description: Unauthorized
+        '404':
+          description: User was not found.
+    delete:
+      tags:
+        - "Users"
+      summary: Delete user
+      description: Deletes user by id.
+      operationId: deleteUser
+      parameters:
+        - $ref: "./user-api.yaml#/schemas/UserId"
+      responses:
+        '200':
+          description: User succesfully deleted.
+        '400':
+          description: |
+            Bad Request, mandatory parameters in url/header/body are missing/empty/invalid.
+        '401':
+          description: Unauthorized
+        '404':
+          description: User was not found.
+    patch:
+      tags:
+        - "Users"
+      summary: Update User
+      description: Updates User by id.
+      operationId: updateUser
+      parameters:
+        - $ref: "./user-api.yaml#/schemas/UserId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "./user-api.yaml#/schemas/UserContract"
+      responses:
+        200:
+          description: "Updated user"
+          content:
+            application/json:
+              schema:
+                $ref: "./user-api.yaml#/schemas/UserContract"
+        '400':
+          description: |
+            Bad Request, mandatory parameters in url/header/body are missing/empty/invalid.
+        '401':
+          description: Unauthorized
+        '404':
+          description: User is not found.
+components:
+  parameters:
+    pageParam:
+      name: "page"
+      in: "query"
+      description: "pagination page"
+      required: false
+      schema:
+        type: "integer"
+        default: 0
+    sizeParam:
+      name: "size"
+      in: "query"
+      description: "pagination size"
+      required: false
+      schema:
+        type: "integer"
+    searchTerm:
+      name: "searchTerm"
+      in: "query"
+      description: "search term"
+      required: false
+      schema:
+        type: "string"
+  schemas:
+    TestContractInFile:
+      type: "object"
+      properties:
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+        updatedBy:
+          type: "string"
+        createdBy:
+          type: "string"
+        id:
+          type: "integer"
+        email:
+          type: "string"
+        name:
+          type: "string"

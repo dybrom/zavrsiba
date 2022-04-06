@@ -37,7 +37,7 @@ paths:
               schema:
                 type: "array"
                 items:
-                  $ref: "./user-api.yaml#/schemas/UserContract"
+                  $ref: "./roles-schemas.yaml#/schemas/UserRoleContract"
 components:
   parameters:
     pageParam:
@@ -55,23 +55,3 @@ components:
       required: false
       schema:
         type: "integer"
-  schemas:
-    TestContractInFile:
-      type: "object"
-      properties:
-        createdAt:
-          type: "string"
-          format: "date-time"
-        updatedAt:
-          type: "string"
-          format: "date-time"
-        updatedBy:
-          type: "string"
-        createdBy:
-          type: "string"
-        id:
-          type: "integer"
-        email:
-          type: "string"
-        name:
-          type: "string"

@@ -1,16 +1,19 @@
 package com.example.fixba.service;
 
-import com.example.fixba.dto.UserDTO;
-import com.example.fixba.model.Role;
+import com.example.fixba.generated.model.UserContract;
+import com.example.fixba.generated.model.UserRegisterContract;
 import com.example.fixba.model.User;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface UserService {
-    List<UserDTO> getAll();
+    List<UserContract> getAll();
     User save(User user);
     void addRoleToUser(String email, String roleName);
-    User getUser(String email);
+    User getUserByEmail(String email);
+    User createUser(UserRegisterContract user);
+    void deleteUser(Integer id);
+    UserContract updateUser(Integer id, UserContract user);
+    UserContract getUserById(Integer id);
+    List<UserContract> searchUser(String searchTerm);
 }

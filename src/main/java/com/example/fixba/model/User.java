@@ -1,21 +1,26 @@
 package com.example.fixba.model;
 
+import com.example.fixba.generated.model.UserContract;
+import com.example.fixba.generated.model.UserRoleContract;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name= "users")
+@Entity(name = "users")
+@Table
 public class User extends BaseModel {
 
     public User(String email, String password) {
@@ -40,7 +45,6 @@ public class User extends BaseModel {
     private String password;
 
     private String name;
-
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles = new ArrayList<>();
 
@@ -82,5 +86,26 @@ public class User extends BaseModel {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public UserContract toDTO() {
+        UserContract user = new UserContract();
+        if (this.getCreatedAt() != null) {
+            user.setCreatedAt(OffsetDateTime.of(this.getCreatedAt(), ZoneOffset.UTC));
+        }
+        if (this.getUpdatedAt() != null) {
+            user.setUpdatedAt(OffsetDateTime.of(this.getUpdatedAt(), ZoneOffset.UTC));
+        }
+
+        user.setEmail(this.getEmail());
+        user.setName(this.getName());
+        user.setRoles(this.getRoles().stream().map(role -> {
+            UserRoleContract roleContract = new UserRoleContract();
+            roleContract.setId(role.getId());
+            roleContract.setName(role.getName());
+            return roleContract;
+        }).collect(Collectors.toList()));
+        user.setId(this.getId());
+        return user;
     }
 }
