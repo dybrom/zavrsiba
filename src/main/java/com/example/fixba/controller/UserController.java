@@ -1,5 +1,6 @@
 package com.example.fixba.controller;
 
+import com.example.fixba.exception.NotFoundException;
 import com.example.fixba.generated.model.UserContract;
 import com.example.fixba.generated.model.UserRegisterContract;
 import com.example.fixba.model.User;
@@ -18,7 +19,6 @@ public class UserController implements UsersApi {
 
 	UserService userService;
 
-	@Autowired
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
@@ -33,8 +33,9 @@ public class UserController implements UsersApi {
 
 	@Override
 	public ResponseEntity<UserContract> addUser(@Valid @RequestBody UserRegisterContract user) {
-		User newUser = userService.createUser(user);
-		return ResponseEntity.ok(newUser.toDTO());
+		throw new NotFoundException("test");
+//		User newUser = userService.createUser(user);
+//		return ResponseEntity.ok(newUser.toDTO());
 	}
 
 	@Override

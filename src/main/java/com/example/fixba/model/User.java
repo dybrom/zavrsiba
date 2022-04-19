@@ -19,9 +19,12 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "users")
+@Entity(name = User.TABLE_NAME)
 @Table
 public class User extends BaseModel {
+
+    public static final String TABLE_NAME = "users";
+    public static final String COLUMN_EMAIL = "email";
 
     public User(String email, String password) {
         this.email = email;

@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Transactional
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
@@ -30,8 +29,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     PasswordEncoder passwordEncoder;
     RoleService roleService;
 
-
-    @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, RoleService roleService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;

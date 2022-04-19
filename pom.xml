@@ -140,6 +140,26 @@
                             </configOptions>
                         </configuration>
                     </execution>
+
+<!--                    <execution>-->
+<!--                        <id>fix-roles</id>-->
+<!--                        <goals>-->
+<!--                            <goal>generate</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <inputSpec>${project.basedir}/src/main/resources/roles-service.yaml</inputSpec>-->
+<!--                            <generatorName>spring</generatorName>-->
+<!--                            <configOptions>-->
+<!--                                <useTags>true</useTags>-->
+<!--                                <dateLibrary>java8</dateLibrary>-->
+<!--                                <modelPackage>com.example.fixba.generated.model</modelPackage>-->
+<!--                                <hideGenerationTimestamp>true</hideGenerationTimestamp>-->
+<!--                                <swaggerDocketConfig>false</swaggerDocketConfig>-->
+<!--                                <apiFirst>false</apiFirst>-->
+<!--                                <interfaceOnly>true</interfaceOnly>-->
+<!--                            </configOptions>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
                 </executions>
             </plugin>
         </plugins>

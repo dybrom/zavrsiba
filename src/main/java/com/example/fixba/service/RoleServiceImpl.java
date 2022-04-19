@@ -11,17 +11,12 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class RoleServiceImpl implements RoleService {
 
     RoleRepository roleRepository;
 
-    @Autowired
     public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
-    }
-
-    public RoleServiceImpl() {
     }
 
     @Override

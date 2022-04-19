@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    @Query("SELECT u FROM users u where u.email =?1")
+    @Query(value = "SELECT * FROM " + User.TABLE_NAME + " u where " + User.COLUMN_EMAIL + "=:email", nativeQuery = true)
     User findByEmail(String email);
 
     @Query(value = "SELECT u.* FROM users u " +

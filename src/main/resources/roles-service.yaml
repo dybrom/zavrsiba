@@ -11,33 +11,40 @@ servers:
     description: "local host"
 
 paths:
-  /api/v1/roles:
-    get:
-      tags:
-        - "Roles"
-      summary: "Get roles"
-      operationId: "getRoles"
-      parameters:
-        - $ref: '#/components/parameters/pageParam'
-        - $ref: '#/components/parameters/sizeParam'
-        - name: "order"
-          in: "query"
-          description: "order columns comma separated list"
-          required: false
-          schema:
-            type: "string"
-            pattern: "^(((dueDate|title|createdAt){1}:)((asc|desc){1}))(,{1}(((dueDate|title|createdAt)+:)((asc|desc){1})))*$"
-            default: "createdAt:desc"
-            example: "title:asc,dueDate:desc"
-      responses:
-        200:
-          description: "List of roles"
-          content:
-            application/json:
-              schema:
-                type: "array"
-                items:
-                  $ref: "./roles-schemas.yaml#/schemas/UserRoleContract"
+    /api/v1/roles:
+      post:
+            tags:
+              - "Roles"
+            summary: "Add new role"
+            operationId: "addRole"
+            requestBody:
+              required: true
+              content:
+                application/json:
+                  schema:
+                    $ref: "./roles-schemas.yaml#/schemas/RoleAddContract"
+            responses:
+              200:
+                description: "Add new role"
+                content:
+                  application/json:
+                    schema:
+                      $ref: "./roles-schemas.yaml#/schemas/UserRoleContract"
+
+      get:
+        tags:
+          - "Roles"
+        summary: "Get all roles"
+        operationId: "getRoles"
+        responses:
+          200:
+            description: "List of roles"
+            content:
+              application/json:
+                schema:
+                  type: "array"
+                  items:
+                    $ref: "./roles-schemas.yaml#/schemas/UserRoleContract"
 components:
   parameters:
     pageParam:

@@ -10,8 +10,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "role")
+@Table(name = Role.TABLE_NAME)
 public class Role {
+
+    public static final String TABLE_NAME = "roles";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
