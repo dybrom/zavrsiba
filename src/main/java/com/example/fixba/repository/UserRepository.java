@@ -10,9 +10,12 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    @Query("SELECT u FROM users u where u.email =?1")
+    @Query(value = "SELECT * FROM " + User.TABLE_NAME + " u where " + User.COLUMN_EMAIL + "=:email", nativeQuery = true)
     User findByEmail(String email);
 
-    List<User> findAllByRolesIn(List<Role> roles);
+    @Query(value = "SELECT u.* FROM users u " +
+            "JOIN users_roles ur " + "ON u.id = ur.users_id " +
+            "JOIN role r ON ur.roles_id = r.id WHERE r.name  LIKE :searchTerm OR u.name LIKE :searchTerm OR u.email LIKE :searchTerm", nativeQuery = true)
+    List<User> findUsersByRoleOrName(String searchTerm);
 
 }
